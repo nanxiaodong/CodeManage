@@ -1,0 +1,51 @@
+win7系统没有iis服务，如何启动？
+控制面板->程序和功能->打开或关闭windows功能-Internet信息服务
+
+.NET  Framework的路径
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\
+
+
+装完.NET Framework之后会自动将aspnet_isapi.dll注册到IIS里面去
+
+先装的.NET Framework 后装的IIS  处理程序映射
+
+命令注册
+
+扩展程序注册在命令：aspnet_regiis -i
+两个地方：
+第一步：开启cmd 命令窗口（用管理员账户打开）
+
+第二步：定位到目录：cd  C:\Windows\Microsoft.NET\Framework\v4.0.30319  
+
+第三步：在Vs的命令提示符程序中注册一下：aspnet_regiis -i
+--------------------------------------------------------------------------------------------
+url请求——>80端口
+操作系统的内核模块（Kernal Model）:HTTP.SYS（驱动级别）负责解析Http请求，监听端口（80端口），并负责将请求分发给具体的程序处理
+									查询注册表，如果IIS注册了，就交给ISS处理
+用户模块（User Model）：w3svc服务  svchost.exe  调用aspnet_isapi.dll
+---------------------------------------------------------------------------------------------------
+aspnet_isapi.dll(非托管代码写的)：托管和非托管的桥梁
+
+IIS服务的核心进程：inetinfo.exe
+aspnet_isapi.dll负责启动.NET Framework运行时（Net  Runtime）
+
+获得请求的路径信息：context.Request.RawUrl   一般处理程序
+
+19个事件：相当于插件机制（可以在任何一个事件都执行自己写的代码）插件模型
+
+入口：ISAPIRuntime->ProcessRequest()方法
+
+通过句柄创建HttpWorkRequest对象，通过HttpWorkRequest创建HttpContext对象（还拿着ECB句柄）
+
+
+
+
+
+
+
+
+
+
+
+
+

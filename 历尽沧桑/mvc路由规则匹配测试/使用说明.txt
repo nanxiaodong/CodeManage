@@ -1,0 +1,2 @@
+将“RouteDebug.dll” 拷到项目中，然后添加引用（找到拷贝的dll文件），然后在Global中的Application_Start()方法中写一行代码【RegisterRoutes(RouteTable.Routes)代码后面】  RouteDebug.RouteDebug.RewriteRoutesForTesting(RouteTable.Routes);
+

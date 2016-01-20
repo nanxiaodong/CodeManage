@@ -1,0 +1,8 @@
+﻿1.EF上下文对象声明（MainBCUnitOfWork创建）时，DbContext需要引用EntityFramework.dll文件
+2.MainBCUnitOfWork所属的类库中不需要再App.config中指定数据了路径，只需要在启动项目中的App.config文件中指定数据库数据即可
+3.如果实现实体变化，数据库也调整相应表结构，不提示实体变化操作步骤
+	a.MainBCUnitOfWork类中的静态MainBCUnitOfWork中，手动指定Database.SetInitializer<MainBCUnitOfWork>(null);
+	b.在启动项项目中通过上下文对象创建数据库，db.Database.CreateIfNotExists();第一次启动项目时执行该行代码，之后将这行代码去掉
+	c.修改在相应的实体对象上添加属相，手动修改数据库中相应表结构添加对应的字段
+	d.再次运行启动项项目，这时就能通过执行（不提示实体change的错误提示）
+4.如果使用DatabaseGeneratedOption.Identity需要添加引用System.ComponentModel.DataAnnotations.dll引用

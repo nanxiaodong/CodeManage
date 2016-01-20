@@ -1,0 +1,7 @@
+select top 1 * from (
+select ABS(CHECKSUM(newid())%9000)+1000 as num
+union all
+select ABS(CHECKSUM(newid())%90000)+10000 as num
+union all
+select ABS(CHECKSUM(newid())%900000)+100000 as num
+) as a order by NEWID()

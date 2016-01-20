@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4976BB9-9F3C-440D-93DE-F905062A6EEB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HY.ConsoleApplication</RootNamespace>
+    <AssemblyName>HY.ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\Library\Autofac\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\..\Library\Unity\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppInitialize.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HY.Common.Autofac\HY.Common.Autofac.csproj">
+      <Project>{f8027746-7779-428a-b57f-f6c7f33037bf}</Project>
+      <Name>HY.Common.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HY.Common.Unity\HY.Common.Unity.csproj">
+      <Project>{027f1328-af75-427c-a0ca-bba200f3b078}</Project>
+      <Name>HY.Common.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HY.Common\HY.Common.csproj">
+      <Project>{cffad4bc-05be-4ed1-9ea0-f8ca4d26dcb4}</Project>
+      <Name>HY.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HY.Interface.Common\HY.Interface.Common.csproj">
+      <Project>{f8e27ab3-2aa3-463a-a162-1819662bef20}</Project>
+      <Name>HY.Interface.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HY.Interface.Ctrip\HY.Interface.Ctrip.csproj">
+      <Project>{bf50186a-93b5-4fbb-b89a-eee004f4d868}</Project>
+      <Name>HY.Interface.Ctrip</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HY.Interface.Tuniu\HY.Interface.Tuniu.csproj">
+      <Project>{90eee781-9b3c-4a43-a181-45663fbafc85}</Project>
+      <Name>HY.Interface.Tuniu</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HY.MetaData\HY.MetaData.csproj">
+      <Project>{b2abc73b-9513-467e-8204-24aee2623c69}</Project>
+      <Name>HY.MetaData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

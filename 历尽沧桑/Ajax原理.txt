@@ -1,0 +1,74 @@
+1.通过脚本创建XMLHttpRequest对象
+	//使用浏览器兼容的方式创建 异步对象
+	function createXhr() {
+		var xhobj = false;
+		try {
+			xhobj = new ActiveXObject("Msxml2.XMLHTTP"); // ie msxml3.0+
+		} catch (e) {
+			try {
+				xhobj = new ActiveXObject("Microsoft.XMLHTTP"); //ie msxml2.6
+			} catch (e2) {
+				xhobj = false;
+			}
+		}
+		if (!xhobj && typeof XMLHttpRequest != 'undefined') {// Firefox, Opera 8.0+, Safari
+			xhobj = new XMLHttpRequest();
+		}
+		return xhobj;
+	}
+	
+2.先来创建XMLHttpRequest对象
+Firefox、safari和Opera中创建该对象的JavaScript代码为：
+	var xhr = new XMLHttpRequest();
+在IE5/6中代码为：
+	var xmlRequest = new ActiveXObject(“Microsoft.XMLHTTP”);
+	
+二、为XMLHttpRequest对象设置请求参数	
+    1.GET方式
+		1.1设置参数：xhr.open("GET", "GetAreasByAjax.ashx?isAjax=1", true);
+		1.2GET方式请求可以设置浏览器不使用缓存：xhr.setRequestHeader("If-Modified-Since", "0"); 
+		1.3发送: xhr.send(null);//GET方式 
+	2.POST方式：
+		1.1设置参数：xhr.open("POST", "GetAreasByAjax.aspx", true);
+		1.2添加请求头：xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		1.3发送：xhr.send("isAjax=1&na=123");//POST方式
+三、编写回调函数
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) { //表示完全接收到返回的数据
+			if (xhr.status == 200) { //表示把数据正确的返回到浏览器端，没有出现错误
+				var json = xhr.responseText;//后台返回的数据
+			}
+		}
+	};
+	
+四、异步对象readyState属性
+	readyState属性指出了XMLHttpRequest对象在发送/接收数据过程中所处的几个状态。XMLHttpRequest对象会经历5种不同的状态
+	0：未初始化。对象已经创建，但还未初始化，即还没调用open方法；
+	1：已打开。对象已经创建并初始化，但还未调用send方法；
+	2：已发送。已经调用send 方法，但该对象正在等待状态码和头的返回；
+	3：正在接收。已经接收了部分数据，但还不能使用该对象的属性和方法，因为状态和响应头不完整；
+	4：已加载。所有数据接收完毕
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

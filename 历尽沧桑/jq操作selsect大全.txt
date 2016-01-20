@@ -1,0 +1,30 @@
+jQuery-对Select的操作集合[终结篇]作者：未知　时间： 2009-12-2 8:35:29　文档类型：未知　来自：未知 浏览统计：46907
+ 
+jQuery获取Select选择的Text和Value:
+  选择一项试试看
+语法解释：
+1. $("#select_id").change(function(){//code...});   //为Select添加事件，当选择其中一项时触发
+2. var checkText=$("#select_id").find("option:selected").text();  //获取Select选择的Text
+3. var checkValue=$("#select_id").val();  //获取Select选择的Value
+4. var checkIndex=$("#select_id ").get(0).selectedIndex;  //获取Select选择的索引值
+5. var maxIndex=$("#select_id option:last").attr("index");  //获取Select最大的索引值 
+jQuery设置Select选择的Text和Value:
+ 
+ 
+ 
+语法解释：
+1. $("#select_id ").get(0).selectedIndex=1;  //设置Select索引值为1的项选中
+2. $("#select_id ").val(4);   //设置Select的Value值为4的项选中
+3. $("#select_id option[text='jQuery']").attr("selected", true);   //设置Select的Text值为jQuery的项选中
+jQuery添加/删除Select的Option项：
+
+ 点击一次，Select将追加一个Option
+ 点击将在Select第一个位置插入一个Option
+ 点击将删除Select中索引值最大Option(最后一个)
+语法解释：
+1. $("#select_id").append("<option value='Value'>Text</option>");  //为Select追加一个Option(下拉项)
+2. $("#select_id").prepend("<option value='0'>请选择</option>");  //为Select插入一个Option(第一个位置)
+3. $("#select_id option:last").remove();  //删除Select中索引值最大Option(最后一个)
+4. $("#select_id option[index='0']").remove();  //删除Select中索引值为0的Option(第一个)
+5. $("#select_id option[value='3']").remove();  //删除Select中Value='3'的Option
+5. $("#select_id option[text='4']").remove();  //删除Select中Text='4'的Option

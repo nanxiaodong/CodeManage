@@ -1,0 +1,71 @@
+Page Caching （页面缓存）
+	作为最简单的缓存形式，输出缓存只是在内存中保留为响应请求而发送的 HTML 
+	的副本。其后再有请求时将提供缓存的输出，直到缓存到期，这样，性能
+	有可能得到很大的提高（取决于需要多少开销来创建原始页面输出 - 发送缓存的输出总是很快，并且比较稳定）。 
+
+	要实现页面输出缓存，只要将一条 OutputCache 指令添加到页面即可： 
+	＜%@ OutputCache Duration="60" VaryByParam="*" %＞ 
+	
+	Duration：必需属性。页面应该被缓存的时间，以秒为单位。必须是正整数。
+	VaryByParam：必需属性。Request 中变量的名称，这些变量名应该产生单独的缓存条目。"none" 表示没有变动。"*" 可用于为每个不同的变量数组创建新的缓存条目。变量之间用 ";" 进行分隔。
+
+缓存依赖：1：文本文件
+			 文件依赖 //当a.txt文本文件发生变化或文件路径发生变化时，导致缓存失效
+             Cache.Insert("lis", list, new CacheDependency(this.Request.MapPath("a.txt")));
+		  2：数据库
+				1） -S服务器名称  -E集成身份验证  -ed启动 -d数据库名称  -et指定缓冲依赖的表名 -t表名
+					在vs2010的命令提示符中运行（切换到aspnet_regsql.exe所在的目录）
+					aspnet_regsql -S . -E -ed -d HeimaRegulation -et -t Branch
+
+					缓存依赖禁用该数据库
+					aspnet_regsql -S . -E -dd -d HeimaRegulation
+				2）依赖于数据库的web.config配置
+				  <connectionStrings>
+					<add name="CacheDbConn" connectionString="Data Source=.;InitialCatalog=HeimaRegulation;
+						Persist Security Info=True;User ID=sa;Password=123"
+						providerName="System.Data.SqlClient" />
+				  </connectionStrings>
+				  <system.web>
+					<caching>
+					  <sqlCacheDependency enabled="true">
+						<databases>
+							//第一个参数name值就是后面变成使用的第一个参数 【SqlCacheDependency sqlDepend=new SqlCacheDependency(HeimaReguration,表名)】
+						  <add name="HeimaRegulation" connectionStringName="CacheDbConn" pollTime="500"/> //connectionStringName一定要跟connectionStrings 里面add 项里面的name一致
+						</databases>
+					  </sqlCacheDependency>
+					</caching>
+				  </system.web>
+				3）System.Web.Caching.SqlCacheDependency dep = new
+					System.Web.Caching.SqlCacheDependency("HeimaRegulation", "Branch");
+					Cache.Insert("list", list, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+			3.滑动缓存
+				1）相对过期时间10秒过期（距离最后一次操作时间）  null代表依赖项
+				Cache.Insert("lst",list,null,DateTime.Maxvalue,new TimeSpan(0,0,0,10));0天0小时0分10秒
+				2）绝对过期时间（10秒之后绝对过期，滑动过期时间设置为0）null代表依赖项
+				Cache.Insert("lst",list,null,DateTime.Now.AddSeconds(10),TimeSpan.Zero);
+缓存使用场景第一个：访问量大，变化比较少   典型场景：京东菜单项变化比较少，访问又特别大
+==========================================================================================================		  
+	缓存
+	是一种用空间换取时间的技术，存储位置：CPU二级缓存、内存、windows文件读取缓存
+	缓存存在失效的问题：为了保证从缓存中读取数据和慢速数据（数据库）中数据一致，则需要在慢速数据（数据库）中对应
+	的数据发生变化的时候，清除缓存中相应的数据。
+	缓存是改进网站性能的第一个手段，就像索引是改进数据库性能的第一个手段一样。
+	ASP.net缓存主要分为：页面缓存(中庸)、数据源缓存(最不灵活的)、数据缓存(灵活)这三种主要类型。
+	页面缓存
+	给页面添加<%@ OutputCache Duration=“15”  VaryByParam=“none”%>标签，就可以启用页面缓存，这样页面内容就被缓存
+				Duration表示缓存时间，以秒为单位
+	这个缓存是在服务器缓存的，不是在客户端。一般只有看帖、看新闻、看视频的页面才缓存
+	如果想让任何不同的查询字符串都创建不同的缓存，则设置VaryByParam="*"，一般情况下设置“*”就足够。
+	数据源缓存
+	在数据源控件中添加属性：EnableCaching="true" CacheDuration="20"
+	数据源缓存相当于将数据缓存到内存中，在缓存期间不是直接访问的数据库
+	数据变化频繁的话，就不适合使用
+	缓存依赖
+	文件依赖 //当a.txt文本文件发生变化或文件路径发生变化时，导致缓存失效
+             Cache.Insert("lis", list, new CacheDependency(this.Request.MapPath("a.txt")));
+	数据源依赖 (需要在web.config里面进行配置)
+			SqlCacheDependency sqlDepend = new SqlCacheDependency("数据库缓存", "AreaFull");
+             Cache.Insert("list",list,sqlDepend);
+	 绝对过期时间
+				Cache.Insert("list",list,null,DateTime.Now.AddSeconds(10),TimeSpan.Zero);
+	缓存使用场景：访问量大，变化比较少   典型场景：京东菜单项变化比较少，访问又特别大

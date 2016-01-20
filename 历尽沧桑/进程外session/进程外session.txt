@@ -1,0 +1,15 @@
+1.存在服务器上
+	StateServer  对象必须可序列化
+		1.开始 ASP.NET 状态服务：cmd里面命令：services.msc
+		2.配置webconfig
+			<sessionState mode="StateServer" stateConnectionString="tcpip=localhost:42424">  【IP地址：端口号】
+			</sessionState>
+		3.如果是远程的stateserver配置注册表
+		命令：cmd → regedit.exe	HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\aspnet_state\Parameters\AllowRemoteConnection
+			设置成1
+2.存在数据库中
+	SQLServer
+	【在vs的命令提示中运行下面这行：创建一个SessionTest数据库】
+		aspnet_regsql.exe -S 127.0.0.1 -U sa -P 123 -ssadd -sstype c -d SessionTest
+		1. <sessionState mode="SQLServer" allowCustomSqlDatabase="true" sqlConnectionString="Data Source=.;Initial Catalog=SessionTest;uid=sa;pwd=123"></sessionState>
+		2.对象必须可序列化

@@ -1,0 +1,198 @@
+1. 窗体加载完成之后执行  dom创建完成，并且图片/css/js加载完成才触发
+	onload  只能注册一次
+	window.onload = function () {
+	   alert("win.onload");
+	}
+	
+	JQuery实现window.onload
+	$(window).load(FUNCTION(){})
+
+	 窗体加载完成之后执行  dom创建完成
+	 $(document).ready(FUNCTION(){})
+	 $(function(){}) <==>$(document).ready(function(){})
+2. dom对象不能使用jQuery对象的方法或属性
+	var div = document.getElementById("d1");
+	 div.innerHTML = "123";//Dom对象方法
+	//把dom对象转化为jQuery对象
+	var $div = $(div);
+	$div.html("1111");//jQuery对象方法
+3. jQuery对象不能使用dom对象的方法或属性
+	var $div = $("#d1");
+	$div.html("abc");//jQuery对象方法
+	//jQuery对象转换为dom对象
+	var div = $div.get(0); //$div[0];
+	div.innerHTML = "3333";//Dom对象方法
+4. 层次选择器
+	<div id="wrap">
+        <p>我是p1</p>
+        <p>我是p1</p>
+        <div>我是内层div
+            <p>我也是p</p>
+            <p>我也是p</p>
+        </div>
+    </div>
+    <div>111</div>
+    <div>222</div>
+	
+	  //wrap 中的所有p  子p  子子p
+	  $("#wrap p").css("background-color", "red");//所有的p标签背景都变红
+      //直接子元素
+      $("#wrap > p").css("background-color", "red");//我是p1 的两个p标签背景变红
+      //之后的紧邻的第一个div
+      $("#wrap + div").css("background-color", "red");//111 的div背景变红
+      //之后所有的div
+      $("#wrap ~ div").css("background-color", "red");//111  222的div背景都变红
+5. 判断元素是否存在
+	 if ($("#d1").length > 0) {
+         alert("find");  
+     } else {  
+	     alert("no find");
+     }
+6. 当页面加载后将 id 为 'login' 的元素设置焦点:$("#login:focus");
+7. next() 这个函数只返回后面那个紧邻的同辈元素，而不是后面所有的同辈元素（可以使用nextAll）。可以用一个可选的表达式进行筛选。
+   next("p") 之后紧邻的第一个p兄弟节点
+   nextAll()查找当前元素之后所有的同辈元素。nextAll("p")之后所有同辈的p元素
+   prev([expr])只有紧邻的同辈元素会被匹配到，而不是前面所有的同辈元素。
+   prevAll([expr])查找当前元素之前所有的同辈元素
+   siblings([expr])用于筛选同辈元素的表达式(所有的同辈元素)
+   andSelf()加入自己//$("#d4").nextAll().andSelf().css("background-color", "red")
+8. siblings()用于筛选同辈元素的表达式
+	HTML 代码:<p>Hello</p><div><span>Hello Again</span></div><p>And Again</p>
+	jQuery 代码:$("div").siblings()
+	结果:[ <p>Hello</p>, <p>And Again</p> ]
+	
+	找到每个div的所有同辈元素中带有类名为selected的元素。
+	HTML 代码:<div><span>Hello</span></div><p class="selected">Hello Again</p><p>And Again</p>
+	jQuery 代码:$("div").siblings(".selected")
+	结果:[ <p class="selected">Hello Again</p> ]
+9. 获得第一个input：$("input:first").css("background-color","red");
+   获得最后一个input：$("input:last").css("background-color", "red");
+   不包含class=myClass类样式和id为t1的input：$("input:not(.myClass):not(#t1)").css("background-color", "red");
+    //odd（单词 奇数）(效果 是偶数项)  even（单词 偶数）(效果 奇数项) 
+    -------------------------------------------------------------------------------
+	:odd查找表格的2、4、6行（即索引值1、3、5...）
+	HTML 代码:	<table>
+				  <tr><td>Header 1</td></tr>
+				  <tr><td>Value 1</td></tr>
+				  <tr><td>Value 2</td></tr>
+				</table>
+	jQuery 代码:$("tr:odd")
+	结果:[ <tr><td>Value 1</td></tr> ]
+	-----------------------------------------------------------------------------
+	:even匹配所有索引值为偶数的元素，从 0 开始计数
+	查找表格的1、3、5...行（即索引值0、2、4...）
+
+	HTML 代码:	<table>
+				  <tr><td>Header 1</td></tr>
+				  <tr><td>Value 1</td></tr>
+				  <tr><td>Value 2</td></tr>
+				</table>
+	jQuery 代码:
+	$("tr:even")结果:[ <tr><td>Header 1</td></tr>, <tr><td>Value 2</td></tr> ]
+	-----------------------------------------------------------------------------
+	:eq(index)匹配一个给定索引值的元素   从 0 开始计数
+
+	描述:查找第二行
+
+	HTML 代码:<table>
+				  <tr><td>Header 1</td></tr>
+				  <tr><td>Value 1</td></tr>
+				  <tr><td>Value 2</td></tr>
+			  </table>
+	jQuery 代码:$("tr:eq(1)")
+	结果:[ <tr><td>Value 1</td></tr> ]
+	--------------------------------------------------------------
+	:lt(index)匹配所有小于给定索引值的元素  从 0 开始计数
+	描述:查找第一第二行，即索引值是0和1，也就是比2小
+
+	HTML 代码:<table>
+				  <tr><td>Header 1</td></tr>
+				  <tr><td>Value 1</td></tr>
+				  <tr><td>Value 2</td></tr>
+			 </table>
+	jQuery 代码:$("tr:lt(2)")
+	结果:[ <tr><td>Header 1</td></tr>, <tr><td>Value 1</td></tr> ]
+	-------------------------------------------------------------------
+	:gt(index)匹配所有大于给定索引值的元素   从 0 开始计数
+	描述:查找第二第三行，即索引值是1和2，也就是比0大
+	HTML 代码:<table>
+				  <tr><td>Header 1</td></tr>
+				  <tr><td>Value 1</td></tr>
+				  <tr><td>Value 2</td></tr>
+			  </table>
+    jQuery 代码:$("tr:gt(0)")
+    结果:[ <tr><td>Value 1</td></tr>, <tr><td>Value 2</td></tr> ]
+    --------------------------------------------------------------
+    :not(selector)去除所有与给定选择器匹配的元素   selector用于筛选的选择器
+	描述:查找所有未选中的 input 元素
+	HTML 代码:<input name="apple" /><input name="flower" checked="checked" />
+	jQuery 代码:$("input:not(:checked)")
+	结果:[ <input name="apple" /> ]
+10. 获取某行中的第二个td  $("td", $(this)).eq(1)
+	    <table id="tb" border="1px">
+			<tr><td>1111</td><td>2222</td></tr>
+        </table>
+	$(function () {
+            $("#tb tr").click(function () {
+                //在当前点击的tr中找所有td
+                $("td", $(this)).text("aaaa");
+                $("td", $(this)).eq(1).css("background-color","red") ;
+            })
+        })
+11. 获取类型为text且id部位t1的input标签：$("input[type=text][id!=t1]").css("background-color","red");
+	获取选中的radio值：$("input[name=sex]:checked").val();//radio的name属性为sex
+	获取选中的checkbox的值：$("input[type=checkbox]:checked").each(function () {
+								 //this  是包装集中的每一项  dom对象
+								 alert($(this).val());
+							 });
+
+
+
+
+
+	
+
+
+	
+
+
+   
+
+
+
+
+
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
